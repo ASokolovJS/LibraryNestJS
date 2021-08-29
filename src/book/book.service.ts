@@ -43,6 +43,7 @@ export class BookService {
       }else{
         return "You need to buy a subscription"
       }
+      return `The book: ${titleBook}  was added to the user: ${user.name} `
     }else{
       return "You can't take more than 5 books"
     }

@@ -45,9 +45,10 @@ export class UserService {
 
   async editUser(id:number, UpdateUserDto:UpdateUserDto) {
     const user = await this.usersRepository.findOne(id)
+    const lastName = user.name
     user.name = UpdateUserDto.name
     this.usersRepository.save(user)
-    return "The information has been updated"
+    return `The information has been updated. Last Name: ${lastName} -> New Name: ${UpdateUserDto.name}`
   }
 
   async findSubscription(id: number){
@@ -61,11 +62,16 @@ export class UserService {
 
   async getInfo(id:number){
     const user = await this.usersRepository.findOne(id)
-    const findlist = await UserAndBook.find()
-    const listbook = (findlist.filter(p => p.userId == id)).map(i => i.bookTitile)
-
-    return `Name: ${user.name}
-            List Book: ${listbook.toString()}
-            Subscription isActiv: ${user.subscription}`
+    if(user != undefined){
+      const findlist = await UserAndBook.find()
+      const listbook = (findlist.filter(p => p.userId == id)).map(i => i.bookTitile)
+  
+      return `Name: ${user.name}
+              List Book: ${listbook.toString()}
+              Subscription isActiv: ${user.subscription}`
+    }else{
+      return "The user was not found"
+    }
+    
   }
 }
